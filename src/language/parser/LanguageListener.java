@@ -5,7 +5,14 @@ package language.parser;
     import language.dataStructures.SymbolTable;
     import language.dataStructures.Variable;
     import language.exceptions.SemanticException;
+    import language.ast.Program;
+    import language.ast.AbstractCommand;
+    import language.ast.ReadCommand;
+    import language.ast.WriteCommand;
+    import language.ast.AssignementCommand;
+    import language.ast.DecisionCommand;
     import java.util.ArrayList;
+    import java.util.Stack;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -124,4 +131,14 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitTermo(LanguageParser.TermoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LanguageParser#iSelecao}.
+	 * @param ctx the parse tree
+	 */
+	void enterISelecao(LanguageParser.ISelecaoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#iSelecao}.
+	 * @param ctx the parse tree
+	 */
+	void exitISelecao(LanguageParser.ISelecaoContext ctx);
 }

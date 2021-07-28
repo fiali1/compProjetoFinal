@@ -19,6 +19,10 @@ public class MainClass {
 
             parser.programa();
 
+            parser.exibeComandos();
+
+            parser.gerarCodigo();
+
             System.out.println("File compiled successfully!");
         } catch (SemanticException err) {
             System.err.println("Error: " + err.getMessage());

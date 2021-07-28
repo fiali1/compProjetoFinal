@@ -14,6 +14,17 @@ public class Variable extends Symbol {
         this.value  = value;
     }
 
+    @Override
+    public String generateJavaCode() {
+        String str;
+        if (type == NUMBER)
+            str = "double";
+        else
+            str = "String";
+
+        return str + " " + super.name + ";";
+    }
+
     public int getType() {
         return type;
     }

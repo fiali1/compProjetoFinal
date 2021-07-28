@@ -7,6 +7,8 @@ public abstract class Symbol {
         this.name = name;
     }
 
+    public abstract String generateJavaCode();
+
     public String getName() {
         return name;
     }

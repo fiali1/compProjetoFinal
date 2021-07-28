@@ -1,5 +1,6 @@
 package language.dataStructures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SymbolTable {
@@ -19,5 +20,13 @@ public class SymbolTable {
 
     public Symbol getSymbol(String symbolName) {
         return this.map.get(symbolName);
+    }
+
+    public ArrayList<Symbol> getAllSymbols() {
+        ArrayList<Symbol> list = new ArrayList<Symbol>();
+        for (Symbol symbol: map.values()) {
+            list.add(symbol);
+        }
+        return list;
     }
 }

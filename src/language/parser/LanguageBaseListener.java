@@ -5,7 +5,14 @@ package language.parser;
     import language.dataStructures.SymbolTable;
     import language.dataStructures.Variable;
     import language.exceptions.SemanticException;
+    import language.ast.Program;
+    import language.ast.AbstractCommand;
+    import language.ast.ReadCommand;
+    import language.ast.WriteCommand;
+    import language.ast.AssignementCommand;
+    import language.ast.DecisionCommand;
     import java.util.ArrayList;
+    import java.util.Stack;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -150,6 +157,18 @@ public class LanguageBaseListener implements LanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitTermo(LanguageParser.TermoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterISelecao(LanguageParser.ISelecaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitISelecao(LanguageParser.ISelecaoContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

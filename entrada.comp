@@ -3,6 +3,16 @@ inicio
     Numero b;
     ler(a);
     ler(b);
+
+    a = b + 2;
+
+    se (a > b) {
+        escrever(b);
+    }
+    senao {
+        escrever(a);
+    }
+
     escrever(a);
     escrever(b);
 fim;
