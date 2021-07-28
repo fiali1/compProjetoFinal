@@ -1,0 +1,8 @@
+inicio
+    Texto a;
+    Numero b;
+    ler(a);
+    ler(b);
+    escrever(a);
+    escrever(b);
+fim;
