@@ -11,7 +11,7 @@ public class AssignementCommand extends AbstractCommand {
 
     @Override
     public String generateJavaCode() {
-        return id + " " + expression + ";";
+        return id + " = " + expression + ";";
     }
 
     @Override

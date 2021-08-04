@@ -1,16 +1,18 @@
 inicio
-    Texto a;
-    Numero b;
+    Numero a, b;
+    Texto c;
+
     ler(a);
     ler(b);
+    ler(c);
 
-    a = b + 2;
+    a = b;
 
     se (a > b) {
-        escrever(b);
+        escrever(c);
     }
     senao {
-        escrever(a);
+        escrever(c);
     }
 
     escrever(a);

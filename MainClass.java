@@ -2,17 +2,19 @@ import java.util.Scanner;
 public class MainClass {
 public static void main(String args[]) {
 Scanner _key = new Scanner(System.in);
-String a;
+double a;
 double b;
-a = _key.nextLine();
+String c;
+a = _key.nextDouble;
 b = _key.nextDouble;
-a b+2;
+c = _key.nextLine();
+a = b;
 if (a>b) {
-System.out.printLn(b);
+System.out.println(c);
 } else {
-System.out.printLn(a);
+System.out.println(c);
 }
-System.out.printLn(a);
-System.out.printLn(b);
+System.out.println(a);
+System.out.println(b);
 }
 }
