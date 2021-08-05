@@ -5,10 +5,12 @@ Scanner _key = new Scanner(System.in);
 double a;
 double b;
 String c;
-a = _key.nextDouble;
-b = _key.nextDouble;
+a = _key.nextDouble();
+_key.nextLine();
+b = _key.nextDouble();
+_key.nextLine();
 c = _key.nextLine();
-a = b;
+a = "Teste";
 if (a>b) {
 System.out.println(c);
 } else {

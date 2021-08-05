@@ -6,7 +6,7 @@ inicio
     ler(b);
     ler(c);
 
-    a = b;
+    a = "Teste";
 
     se (a > b) {
         escrever(c);

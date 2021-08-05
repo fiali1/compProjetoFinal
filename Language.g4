@@ -126,7 +126,7 @@ termo           : Id {
                     verificaId(_input.LT(-1).getText());
                     _expressaoConteudo += _input.LT(-1).getText();
                   }
-                | Valor {
+                | valor {
                    _expressaoConteudo += _input.LT(-1).getText();
                 };
 
@@ -134,7 +134,7 @@ iSelecao        : 'se' P1 Id {
                     _expressaoDecisao = _input.LT(-1).getText();
                   } Relacional {
                     _expressaoDecisao += _input.LT(-1).getText();
-                  } (Id | Valor) {
+                  } (Id | valor) {
                     _expressaoDecisao += _input.LT(-1).getText();
                   } P2 C1 {
                     threadAtual = new ArrayList<AbstractCommand>();
@@ -150,6 +150,8 @@ iSelecao        : 'se' P1 Id {
                     DecisionCommand cmd = new DecisionCommand(_expressaoDecisao, listaVerdadeiro, listaFalso);
                     pilha.peek().add(cmd);
                   })?;
+
+valor           : Numero | Texto;
 
 /* Tokens */
 
@@ -175,4 +177,6 @@ Atributo        : '=';
 
 Id              : [a-z] ([a-z] | [A-Z] | [0-9])*;
 
-Valor           : ([0-9]+ ('.' [0-9]+)?) | ('"' ([a-z] | [A-Z] | [0-9])* '"');
+Numero          : [0-9]+ ('.' [0-9]+)?;
+
+Texto           : '"' ([a-z] | [A-Z] | [0-9])* '"';

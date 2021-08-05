@@ -141,4 +141,14 @@ public interface LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitISelecao(LanguageParser.ISelecaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LanguageParser#valor}.
+	 * @param ctx the parse tree
+	 */
+	void enterValor(LanguageParser.ValorContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#valor}.
+	 * @param ctx the parse tree
+	 */
+	void exitValor(LanguageParser.ValorContext ctx);
 }
