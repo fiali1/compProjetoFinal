@@ -40,4 +40,5 @@ public class DecisionCommand extends AbstractCommand {
                 ", listFalse=" + listFalse +
                 '}';
     }
+
 }

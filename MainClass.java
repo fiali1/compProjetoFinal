@@ -10,7 +10,7 @@ _key.nextLine();
 b = _key.nextDouble();
 _key.nextLine();
 c = _key.nextLine();
-a = "Teste";
+c = "Teste"+"Teste"+"Teste"+"Teste"+"Teste";
 if (a>b) {
 System.out.println(c);
 } else {

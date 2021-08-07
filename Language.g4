@@ -151,7 +151,32 @@ iSelecao        : 'se' P1 Id {
                     pilha.peek().add(cmd);
                   })?;
 
-valor           : Numero | Texto;
+
+valor           : Numero {
+                    Variable var = (Variable) tabela.getSymbol(_expressaoId);
+                    int varTipo = var.getType();
+
+                    if (varTipo != 0)
+                        throw new SemanticException("Symbol (" + _expressaoId + " : Texto) and value (" + _input.LT
+                        (-1).getText() + ") don't match!");
+                    else {
+                        var.setValue(_input.LT(-1).getText());
+                        table.add(var);
+                    }
+
+
+                  } | Texto {
+                    Variable var = (Variable) tabela.getSymbol(_expressaoId);
+                    int varTipo = var.getType();
+
+                    if (varTipo != 1)
+                        throw new SemanticException("Symbol (" + _expressaoId + " : Numero) and value (" + _input.LT(-1)
+                        .getText() + ") don't match!");
+                    else {
+                         var.setValue(_input.LT(-1).getText());
+                         table.add(var);
+                     }
+                  };
 
 /* Tokens */
 
