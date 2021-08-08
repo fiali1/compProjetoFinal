@@ -143,6 +143,16 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitISelecao(LanguageParser.ISelecaoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LanguageParser#iLaco}.
+	 * @param ctx the parse tree
+	 */
+	void enterILaco(LanguageParser.ILacoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#iLaco}.
+	 * @param ctx the parse tree
+	 */
+	void exitILaco(LanguageParser.ILacoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LanguageParser#valor}.
 	 * @param ctx the parse tree
 	 */

@@ -9,16 +9,20 @@ public class LoopCommand extends AbstractCommand {
     public LoopCommand(String condition, ArrayList<AbstractCommand> listLoop) {
         this.condition  = condition;
         this.listLoop   = listLoop;
+
+//        System.out.println("Debug: (constructor) " + this.condition + ", " + this.listLoop);
     }
 
     @Override
     public String generateJavaCode() {
+//        System.out.println("Debug: (code) " + this.condition + ", " + this.listLoop);
+
         StringBuilder str = new StringBuilder();
-        str.append("for (" + condition + ") {\n");
+        str.append("do {\n");
         for (AbstractCommand cmd: listLoop) {
             str.append(cmd.generateJavaCode() + "\n");
         }
-        str.append("}");
+        str.append("} while (" + condition + ");");
 
         return str.toString();
     }

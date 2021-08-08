@@ -10,13 +10,10 @@ _key.nextLine();
 b = _key.nextDouble();
 _key.nextLine();
 c = _key.nextLine();
-if (c>0) {
+do {
 System.out.println(a);
-} else {
 System.out.println(b);
-}
-if (a>2) {
-System.out.println(b);
-}
+System.out.println(c);
+} while (a<1);
 }
 }

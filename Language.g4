@@ -92,7 +92,8 @@ conteudo        : {
 instrucao       : iAttribuicao
                 | iLeitura
                 | iEscrita
-                | iSelecao;
+                | iSelecao
+                | iLaco;
 
 iLeitura        : 'ler' P1 Id {
                     verificaId(_input.LT(-1).getText());
@@ -158,6 +159,30 @@ iSelecao        : 'se' {
                     listaFalso = pilha.pop();
                 })? {
                     DecisionCommand cmd = new DecisionCommand(_expressaoDecisao, listaVerdadeiro, listaFalso);
+                    pilha.peek().add(cmd);
+                };
+
+iLaco           : 'faca' {
+                    // Limpa conteúdo anterior
+                    listaLaco = new ArrayList<AbstractCommand>();
+                } C1 {
+                    // Cria nova lista de comandos
+                    threadAtual = new ArrayList<AbstractCommand>();
+                    pilha.push(threadAtual);
+                } (instrucao)+ C2 {
+                    // Armazena e limpa último item da pilha
+                    listaLaco = pilha.pop();
+                } 'enquanto' P1 Id {
+                    verificaId(_input.LT(-1).getText());
+                    _expressaoLaco = _input.LT(-1).getText();
+                } Relacional {
+                    _expressaoLaco += _input.LT(-1).getText();
+                } (Id {
+                    verificaId(_input.LT(-1).getText());
+                } | valor) {
+                    _expressaoLaco += _input.LT(-1).getText();
+                } P2 PV {
+                    LoopCommand cmd = new LoopCommand(_expressaoLaco, listaLaco);
                     pilha.peek().add(cmd);
                 };
 
