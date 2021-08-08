@@ -14,11 +14,12 @@ V=13
 PV=14
 Esp=15
 Operador=16
-Relacional=17
-Atributo=18
-Id=19
-Numero=20
-Texto=21
+OperadorAttribuicao=17
+Relacional=18
+Atributo=19
+Id=20
+Numero=21
+Texto=22
 'inicio'=1
 'fim;'=2
 'Numero'=3
@@ -33,4 +34,4 @@ Texto=21
 '}'=12
 ','=13
 ';'=14
-'='=18
+'='=19

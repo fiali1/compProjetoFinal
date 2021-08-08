@@ -11,6 +11,7 @@ package language.parser;
     import language.ast.WriteCommand;
     import language.ast.AssignementCommand;
     import language.ast.DecisionCommand;
+    import language.ast.LoopCommand;
     import java.util.ArrayList;
     import java.util.Stack;
 
