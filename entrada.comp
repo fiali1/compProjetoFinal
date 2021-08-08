@@ -6,9 +6,13 @@ inicio
     ler(b);
     ler(c);
 
-    faca {
-        escrever(a);
-        escrever(b);
-        escrever(c);
-    } enquanto (a < 1);
+    a = 10 + 2;
+
+    se (a < b) {
+        faca {
+            se (a > b) {
+                escrever(a);
+            }
+        } enquanto (a < 1);
+    }
 fim;

@@ -135,6 +135,13 @@ public class LanguageParser extends Parser {
 
 	    }
 
+	    public void exibeTabela() {
+	        ArrayList<Symbol> lista = tabela.getAllSymbols();
+	        for (Symbol s : lista) {
+	            System.out.println(s);
+	        }
+	    }
+
 	    public void gerarCodigo() {
 	        programa.generateTarget();
 	    }
@@ -693,6 +700,14 @@ public class LanguageParser extends Parser {
 			expressao();
 			setState(92);
 			match(PV);
+
+			                    // Associa os novos valores à variável e atualiza ela na tabela
+
+			                    // TODO: Checagem de tipos
+			                    _varNome    = _expressaoId;
+			                    _varValor   = _expressaoConteudo;
+			                    simbolo     = new Variable(_varNome, _tipo, _varValor);
+			                    tabela.setSymbol(_varNome, simbolo);
 
 			                    AssignementCommand cmd = new AssignementCommand(_expressaoId, _expressaoConteudo);
 			                    pilha.peek().add(cmd);

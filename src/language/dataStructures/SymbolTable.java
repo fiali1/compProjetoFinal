@@ -22,6 +22,10 @@ public class SymbolTable {
         return this.map.get(symbolName);
     }
 
+    public void setSymbol(String symbolName, Symbol var) {
+        this.map.put(symbolName, var);
+    }
+
     public ArrayList<Symbol> getAllSymbols() {
         ArrayList<Symbol> list = new ArrayList<Symbol>();
         for (Symbol symbol: map.values()) {

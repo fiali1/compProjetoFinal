@@ -23,6 +23,8 @@ public class MainClass {
 
             parser.gerarCodigo();
 
+            parser.exibeTabela();
+
             System.out.println("File compiled successfully!");
         } catch (SemanticException err) {
             System.err.println("Error: " + err.getMessage());

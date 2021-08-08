@@ -49,6 +49,13 @@ grammar Language;
 
     }
 
+    public void exibeTabela() {
+        ArrayList<Symbol> lista = tabela.getAllSymbols();
+        for (Symbol s : lista) {
+            System.out.println(s);
+        }
+    }
+
     public void gerarCodigo() {
         programa.generateTarget();
     }
@@ -118,6 +125,14 @@ iAttribuicao    : Id {
                 } Atributo {
                     _expressaoConteudo = "";
                 } expressao PV {
+                    // Associa os novos valores à variável e atualiza ela na tabela
+
+                    // TODO: Checagem de tipos
+                    _varNome    = _expressaoId;
+                    _varValor   = _expressaoConteudo;
+                    simbolo     = new Variable(_varNome, _tipo, _varValor);
+                    tabela.setSymbol(_varNome, simbolo);
+
                     AssignementCommand cmd = new AssignementCommand(_expressaoId, _expressaoConteudo);
                     pilha.peek().add(cmd);
                 };

@@ -126,6 +126,13 @@ public class LanguageLexer extends Lexer {
 
 	    }
 
+	    public void exibeTabela() {
+	        ArrayList<Symbol> lista = tabela.getAllSymbols();
+	        for (Symbol s : lista) {
+	            System.out.println(s);
+	        }
+	    }
+
 	    public void gerarCodigo() {
 	        programa.generateTarget();
 	    }
