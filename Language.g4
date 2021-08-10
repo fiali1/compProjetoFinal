@@ -35,6 +35,12 @@ grammar Language;
     private ArrayList<AbstractCommand> listaVerdadeiro;
     private ArrayList<AbstractCommand> listaFalso;
     private ArrayList<AbstractCommand> listaLaco;
+    private ArrayList<Integer> listaTipos;
+
+    public int retornaTipo(String termo) {
+        Variable variable = (Variable) tabela.getSymbol(termo);
+        return variable.getType();
+    }
 
     public void verificaId(String id) {
         if (!tabela.exists(id)) {
@@ -88,8 +94,9 @@ declaracao      : tipo Id {
                     } else throw new SemanticException("Symbol (" + _varNome + ") already declared");
                 })* PV;
 
-tipo            : 'Numero'      { _tipo = Variable.NUMBER; }
-                | 'Texto'       { _tipo = Variable.TEXT;   };
+tipo            : 'Fracionado'  { _tipo = Variable.FRACIONADO; }
+                | 'Texto'       { _tipo = Variable.TEXT;   }
+                | 'Inteiro'     { _tipo = Variable.INTEIRO;   };
 
 conteudo        : {
                     threadAtual = new ArrayList<AbstractCommand>();
@@ -119,7 +126,9 @@ iEscrita        : 'escrever' P1 Id {
                     pilha.peek().add(cmd);
                 };
 
+
 iAttribuicao    : Id {
+                    listaTipos = new ArrayList<Integer>();
                     verificaId(_input.LT(-1).getText());
                     _expressaoId = _input.LT(-1).getText();
                 } Atributo {
@@ -127,10 +136,16 @@ iAttribuicao    : Id {
                 } expressao PV {
                     // Associa os novos valores à variável e atualiza ela na tabela
 
-                    // TODO: Checagem de tipos
+                    int type = retornaTipo(_expressaoId);
+                    for(int tipo : listaTipos) {
+                        if(type != tipo) {
+                            throw new SemanticException("type " + type + " is different from " + tipo);
+                        }
+                    }
+
                     _varNome    = _expressaoId;
                     _varValor   = _expressaoConteudo;
-                    simbolo     = new Variable(_varNome, _tipo, _varValor);
+                    simbolo     = new Variable(_varNome, retornaTipo(_varNome), _varValor);
                     tabela.setSymbol(_varNome, simbolo);
 
                     AssignementCommand cmd = new AssignementCommand(_expressaoId, _expressaoConteudo);
@@ -139,21 +154,27 @@ iAttribuicao    : Id {
 
 expressao       : termo ( Operador {
                     _expressaoConteudo += _input.LT(-1).getText();
-                  } termo )*;
+                  } termo)*;
 
-termo           : Id {
-                    verificaId(_input.LT(-1).getText());
+termo          : Id {
+                    String nomeTermo = _input.LT(-1).getText();
+                    verificaId(nomeTermo);
                     _expressaoConteudo += _input.LT(-1).getText();
+                    listaTipos.add(retornaTipo(nomeTermo));
                   }
                 | valor {
                    _expressaoConteudo += _input.LT(-1).getText();
+
                 };
+
 
 iSelecao        : 'se' {
                     // Limpa entradas anteriores
                     listaVerdadeiro = new ArrayList<AbstractCommand>();
                     listaFalso = new ArrayList<AbstractCommand>();
+                    // listaTipos = new ArrayList<Integer>();
                 } P1 Id {
+                // TODO: Verificar se existe valor na variavel; criar verificaValor
                     verificaId(_input.LT(-1).getText());
                     _expressaoDecisao = _input.LT(-1).getText();
                 } Relacional {
@@ -201,7 +222,9 @@ iLaco           : 'faca' {
                     pilha.peek().add(cmd);
                 };
 
-valor           : Numero | Texto;
+valor           : Fracionado { listaTipos.add(Variable.FRACIONADO); }
+                | Inteiro { listaTipos.add(Variable.INTEIRO); }
+                | Texto { listaTipos.add(Variable.TEXT); };
 
 /* Tokens */
 
@@ -229,6 +252,8 @@ Atributo            : '=';
 
 Id                  : [a-z] ([a-z] | [A-Z] | [0-9])*;
 
-Numero              : [0-9]+ ('.' [0-9]+)?;
+Fracionado          : [0-9]+ '.' [0-9]+;
+
+Inteiro          : [0-9]+;
 
 Texto               : '"' ([a-z] | [A-Z] | [0-9])* '"';

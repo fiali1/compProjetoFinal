@@ -14,7 +14,7 @@ public class ReadCommand extends AbstractCommand {
 
     @Override
     public String generateJavaCode() {
-        return id + " = _key." + (var.getType() == Variable.NUMBER ? "nextDouble();\n_key.nextLine();" : "nextLine()" +
+        return id + " = _key." + (var.getType() == Variable.FRACIONADO ? "nextDouble();\n_key.nextLine();" : "nextLine()" +
                 ";");
     }
 

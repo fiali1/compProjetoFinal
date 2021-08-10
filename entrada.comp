@@ -1,18 +1,12 @@
 inicio
-    Numero a, b;
+    Inteiro a, b;
+    Fracionado d, e, g;
     Texto c;
 
     ler(a);
     ler(b);
     ler(c);
+    e = 1.1;
+    d = e + 10.5;
 
-    a = 10 + 2;
-
-    se (a < b) {
-        faca {
-            se (a > b) {
-                escrever(a);
-            }
-        } enquanto (a < 1);
-    }
 fim;
