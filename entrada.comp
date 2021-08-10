@@ -6,8 +6,6 @@ inicio
     b = 100;
     d = 10.1;
 
-    faca {
-        escrever(b);
-    } enquanto (d < e);
+    d = e;
 
 fim;

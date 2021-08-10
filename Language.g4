@@ -168,6 +168,7 @@ expressao       : termo ( Operador {
 termo          : Id {
                     String nomeTermo = _input.LT(-1).getText();
                     verificaId(nomeTermo);
+                    verificaValor(nomeTermo);
                     _expressaoConteudo += _input.LT(-1).getText();
                     listaTipos.add(retornaTipo(nomeTermo));
                   }
