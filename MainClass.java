@@ -11,10 +11,8 @@ double g;
 a = 11;
 b = 100;
 d = 10.1;
-if (a>b) {
+do {
 System.out.println(b);
-} else {
-d = e;
-}
+} while (a<b);
 }
 }

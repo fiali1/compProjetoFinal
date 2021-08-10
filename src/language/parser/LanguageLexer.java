@@ -111,6 +111,7 @@ public class LanguageLexer extends Lexer {
 	    private String _expressaoDecisao;
 	    private String _expressaoLaco;
 	    private String _expressaoDecisaoId;
+	    private String _expressaoLacoId;
 	    private ArrayList<AbstractCommand> listaVerdadeiro;
 	    private ArrayList<AbstractCommand> listaFalso;
 	    private ArrayList<AbstractCommand> listaLaco;

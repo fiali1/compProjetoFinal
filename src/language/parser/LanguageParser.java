@@ -119,6 +119,7 @@ public class LanguageParser extends Parser {
 	    private String _expressaoDecisao;
 	    private String _expressaoLaco;
 	    private String _expressaoDecisaoId;
+	    private String _expressaoLacoId;
 	    private ArrayList<AbstractCommand> listaVerdadeiro;
 	    private ArrayList<AbstractCommand> listaFalso;
 	    private ArrayList<AbstractCommand> listaLaco;
@@ -1118,6 +1119,7 @@ public class LanguageParser extends Parser {
 
 			                    // Limpa conteúdo anterior
 			                    listaLaco = new ArrayList<AbstractCommand>();
+			                    listaTipos = new ArrayList<Integer>();
 			                
 			setState(153);
 			match(C1);
@@ -1154,7 +1156,10 @@ public class LanguageParser extends Parser {
 			match(Id);
 
 			                    verificaId(_input.LT(-1).getText());
+			                    verificaValor(_input.LT(-1).getText());
+			                    _expressaoLacoId = _input.LT(-1).getText();
 			                    _expressaoLaco = _input.LT(-1).getText();
+
 			                
 			setState(166);
 			match(Relacional);
@@ -1170,6 +1175,8 @@ public class LanguageParser extends Parser {
 				match(Id);
 
 				                    verificaId(_input.LT(-1).getText());
+				                    verificaValor(_input.LT(-1).getText());
+				                    listaTipos.add(retornaTipo(_input.LT(-1).getText()));
 				                
 				}
 				break;
@@ -1192,6 +1199,12 @@ public class LanguageParser extends Parser {
 			setState(175);
 			match(PV);
 
+			                    int type = retornaTipo(_expressaoLacoId);
+			                    for(int tipo : listaTipos) {
+			                       if(type != tipo) {
+			                          throw new SemanticException("type " + type + " is different from " + tipo);
+			                       }
+			                    }
 			                    LoopCommand cmd = new LoopCommand(_expressaoLaco, listaLaco);
 			                    pilha.peek().add(cmd);
 			                

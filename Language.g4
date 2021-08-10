@@ -33,6 +33,7 @@ grammar Language;
     private String _expressaoDecisao;
     private String _expressaoLaco;
     private String _expressaoDecisaoId;
+    private String _expressaoLacoId;
     private ArrayList<AbstractCommand> listaVerdadeiro;
     private ArrayList<AbstractCommand> listaFalso;
     private ArrayList<AbstractCommand> listaLaco;
@@ -221,6 +222,7 @@ iSelecao        : 'se' {
 iLaco           : 'faca' {
                     // Limpa conteúdo anterior
                     listaLaco = new ArrayList<AbstractCommand>();
+                    listaTipos = new ArrayList<Integer>();
                 } C1 {
                     // Cria nova lista de comandos
                     threadAtual = new ArrayList<AbstractCommand>();
@@ -230,14 +232,25 @@ iLaco           : 'faca' {
                     listaLaco = pilha.pop();
                 } 'enquanto' P1 Id {
                     verificaId(_input.LT(-1).getText());
+                    verificaValor(_input.LT(-1).getText());
+                    _expressaoLacoId = _input.LT(-1).getText();
                     _expressaoLaco = _input.LT(-1).getText();
+
                 } Relacional {
                     _expressaoLaco += _input.LT(-1).getText();
                 } (Id {
                     verificaId(_input.LT(-1).getText());
+                    verificaValor(_input.LT(-1).getText());
+                    listaTipos.add(retornaTipo(_input.LT(-1).getText()));
                 } | valor) {
                     _expressaoLaco += _input.LT(-1).getText();
                 } P2 PV {
+                    int type = retornaTipo(_expressaoLacoId);
+                    for(int tipo : listaTipos) {
+                       if(type != tipo) {
+                          throw new SemanticException("type " + type + " is different from " + tipo);
+                       }
+                    }
                     LoopCommand cmd = new LoopCommand(_expressaoLaco, listaLaco);
                     pilha.peek().add(cmd);
                 };

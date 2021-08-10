@@ -6,10 +6,8 @@ inicio
     b = 100;
     d = 10.1;
 
-    se (a > b) {
+    faca {
         escrever(b);
-    } senao {
-        d = e;
-    }
+    } enquanto (d < e);
 
 fim;
