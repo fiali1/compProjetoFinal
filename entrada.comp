@@ -6,6 +6,4 @@ inicio
     b = 100;
     d = 10.1;
 
-    d = e;
-
 fim;

@@ -25,6 +25,8 @@ public class MainClass {
 
             parser.exibeTabela();
 
+            parser.exibeTabelaComVariaveisNull();
+
             System.out.println("File compiled successfully!");
         } catch (SemanticException err) {
             System.err.println("Error: " + err.getMessage());

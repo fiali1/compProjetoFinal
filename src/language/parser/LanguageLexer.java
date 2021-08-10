@@ -149,6 +149,17 @@ public class LanguageLexer extends Lexer {
 	        }
 	    }
 
+	    public void exibeTabelaComVariaveisNull() {
+	        ArrayList<Symbol> lista = tabela.getAllSymbols();
+	        Variable variable;
+	        for (Symbol s : lista) {
+	           variable = (Variable) s;
+	            if(variable.getValue() == null ) {
+	                System.out.println("Warning: " + s.getName() + " is not been used!");
+	            }
+	        }
+	    }
+
 	    public void gerarCodigo() {
 	        programa.generateTarget();
 	    }
