@@ -2,11 +2,14 @@ inicio
     Inteiro a, b;
     Fracionado d, e, g;
     Texto c;
+    a = 11;
+    b = 100;
+    d = 10.1;
 
-    ler(a);
-    ler(b);
-    ler(c);
-    e = 1.1;
-    d = e + 10.5;
+    se (a > b) {
+        escrever(b);
+    } senao {
+        d = e;
+    }
 
 fim;

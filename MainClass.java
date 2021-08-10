@@ -8,10 +8,13 @@ String c;
 double d;
 double e;
 double g;
-a = _key.nextLine();
-b = _key.nextLine();
-c = _key.nextLine();
-e = 1.1;
-d = e+10.5;
+a = 11;
+b = 100;
+d = 10.1;
+if (a>b) {
+System.out.println(b);
+} else {
+d = e;
+}
 }
 }

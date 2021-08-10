@@ -32,6 +32,7 @@ grammar Language;
     private String _expressaoConteudo;
     private String _expressaoDecisao;
     private String _expressaoLaco;
+    private String _expressaoDecisaoId;
     private ArrayList<AbstractCommand> listaVerdadeiro;
     private ArrayList<AbstractCommand> listaFalso;
     private ArrayList<AbstractCommand> listaLaco;
@@ -40,6 +41,13 @@ grammar Language;
     public int retornaTipo(String termo) {
         Variable variable = (Variable) tabela.getSymbol(termo);
         return variable.getType();
+    }
+
+    public void verificaValor(String termo) {
+        Variable variable = (Variable) tabela.getSymbol(termo);
+        if (variable.getValue() == null) {
+            throw new SemanticException("Id " + termo + " doesn't have a value");
+        }
     }
 
     public void verificaId(String id) {
@@ -172,18 +180,30 @@ iSelecao        : 'se' {
                     // Limpa entradas anteriores
                     listaVerdadeiro = new ArrayList<AbstractCommand>();
                     listaFalso = new ArrayList<AbstractCommand>();
-                    // listaTipos = new ArrayList<Integer>();
+                    listaTipos = new ArrayList<Integer>();
                 } P1 Id {
-                // TODO: Verificar se existe valor na variavel; criar verificaValor
                     verificaId(_input.LT(-1).getText());
+                    verificaValor(_input.LT(-1).getText());
                     _expressaoDecisao = _input.LT(-1).getText();
+                    _expressaoDecisaoId = _input.LT(-1).getText();
+                    listaTipos.add(retornaTipo(_expressaoDecisaoId));
                 } Relacional {
                     _expressaoDecisao += _input.LT(-1).getText();
                 } (Id {
                     verificaId(_input.LT(-1).getText());
+                    verificaValor(_input.LT(-1).getText());
+                    String _expressaoDecisao2 = _input.LT(-1).getText();
+                    listaTipos.add(retornaTipo(_expressaoDecisao2));
                 } | valor) {
                     _expressaoDecisao += _input.LT(-1).getText();
                 } P2 C1 {
+                    int type = retornaTipo(_expressaoDecisaoId);
+                    for(int tipo : listaTipos) {
+                      if(type != tipo) {
+                          throw new SemanticException("type " + type + " is different from " + tipo);
+                      }
+                    }
+
                     threadAtual = new ArrayList<AbstractCommand>();
                     pilha.push(threadAtual);
                 } (instrucao)+ C2 {

@@ -110,6 +110,7 @@ public class LanguageLexer extends Lexer {
 	    private String _expressaoConteudo;
 	    private String _expressaoDecisao;
 	    private String _expressaoLaco;
+	    private String _expressaoDecisaoId;
 	    private ArrayList<AbstractCommand> listaVerdadeiro;
 	    private ArrayList<AbstractCommand> listaFalso;
 	    private ArrayList<AbstractCommand> listaLaco;
@@ -118,6 +119,13 @@ public class LanguageLexer extends Lexer {
 	    public int retornaTipo(String termo) {
 	        Variable variable = (Variable) tabela.getSymbol(termo);
 	        return variable.getType();
+	    }
+
+	    public void verificaValor(String termo) {
+	        Variable variable = (Variable) tabela.getSymbol(termo);
+	        if (variable.getValue() == null) {
+	            throw new SemanticException("Id " + termo + " doesn't have a value");
+	        }
 	    }
 
 	    public void verificaId(String id) {

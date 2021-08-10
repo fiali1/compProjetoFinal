@@ -118,6 +118,7 @@ public class LanguageParser extends Parser {
 	    private String _expressaoConteudo;
 	    private String _expressaoDecisao;
 	    private String _expressaoLaco;
+	    private String _expressaoDecisaoId;
 	    private ArrayList<AbstractCommand> listaVerdadeiro;
 	    private ArrayList<AbstractCommand> listaFalso;
 	    private ArrayList<AbstractCommand> listaLaco;
@@ -126,6 +127,13 @@ public class LanguageParser extends Parser {
 	    public int retornaTipo(String termo) {
 	        Variable variable = (Variable) tabela.getSymbol(termo);
 	        return variable.getType();
+	    }
+
+	    public void verificaValor(String termo) {
+	        Variable variable = (Variable) tabela.getSymbol(termo);
+	        if (variable.getValue() == null) {
+	            throw new SemanticException("Id " + termo + " doesn't have a value");
+	        }
 	    }
 
 	    public void verificaId(String id) {
@@ -931,16 +939,18 @@ public class LanguageParser extends Parser {
 			                    // Limpa entradas anteriores
 			                    listaVerdadeiro = new ArrayList<AbstractCommand>();
 			                    listaFalso = new ArrayList<AbstractCommand>();
-			                    // listaTipos = new ArrayList<Integer>();
+			                    listaTipos = new ArrayList<Integer>();
 			                
 			setState(115);
 			match(P1);
 			setState(116);
 			match(Id);
 
-			                // TODO: Verificar se existe valor na variavel; criar verificaValor
 			                    verificaId(_input.LT(-1).getText());
+			                    verificaValor(_input.LT(-1).getText());
 			                    _expressaoDecisao = _input.LT(-1).getText();
+			                    _expressaoDecisaoId = _input.LT(-1).getText();
+			                    listaTipos.add(retornaTipo(_expressaoDecisaoId));
 			                
 			setState(118);
 			match(Relacional);
@@ -956,6 +966,9 @@ public class LanguageParser extends Parser {
 				match(Id);
 
 				                    verificaId(_input.LT(-1).getText());
+				                    verificaValor(_input.LT(-1).getText());
+				                    String _expressaoDecisao2 = _input.LT(-1).getText();
+				                    listaTipos.add(retornaTipo(_expressaoDecisao2));
 				                
 				}
 				break;
@@ -977,6 +990,13 @@ public class LanguageParser extends Parser {
 			match(P2);
 			setState(127);
 			match(C1);
+
+			                    int type = retornaTipo(_expressaoDecisaoId);
+			                    for(int tipo : listaTipos) {
+			                      if(type != tipo) {
+			                          throw new SemanticException("type " + type + " is different from " + tipo);
+			                      }
+			                    }
 
 			                    threadAtual = new ArrayList<AbstractCommand>();
 			                    pilha.push(threadAtual);
