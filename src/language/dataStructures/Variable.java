@@ -2,9 +2,10 @@ package language.dataStructures;
 
 public class Variable extends Symbol {
 
-    public static final int FRACIONADO = 0;
-    public static final int TEXT = 1;
-    public static final int INTEIRO = 2;
+    public static final int CARACTERE  = 0;
+    public static final int TEXTO      = 1;
+    public static final int INTEIRO    = 2;
+    public static final int FRACIONADO = 3;
 
     private int type;
     private String value;
@@ -18,13 +19,16 @@ public class Variable extends Symbol {
     @Override
     public String generateJavaCode() {
         String str;
-        if (type == FRACIONADO)
-            str = "double";
-        else if (type == TEXT)
+        if (type == CARACTERE)
+            str = "char";
+        else if (type == TEXTO)
             str = "String";
-        else {
+        else if (type == INTEIRO)
             str = "int";
-        }
+        else if (type == FRACIONADO)
+            str = "double";
+        else
+            str = "";
 
         return str + " " + super.name + ";";
     }

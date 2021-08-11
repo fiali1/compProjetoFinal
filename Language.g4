@@ -39,24 +39,17 @@ grammar Language;
     private ArrayList<AbstractCommand> listaLaco;
     private ArrayList<Integer> listaTipos;
 
-    public void verificacaoDeTipos(String nome, ArrayList<Integer> listaTipos){
-        int type = retornaTipo(nome);
-        for(int tipo : listaTipos) {
-            if(type != tipo) {
-                throw new SemanticException("Variable " + nome + " (type: "+ retornaNomeDoTipo(type)
-                     + ") does not match with the type " + retornaNomeDoTipo(tipo));
-            }
-        }
-    }
-
     public String retornaNomeDoTipo (int type) {
-        if (type == 0) {
-            return "Fracionado";
-        } else if (type == 1) {
+        if (type == Variable.CARACTERE)
+            return "Caractere";
+        else if (type == Variable.TEXTO)
             return "Texto";
-        } else {
+        else if (type == Variable.INTEIRO)
             return "Inteiro";
-        }
+        else if (type == Variable.FRACIONADO)
+            return "Fracionado";
+        else
+            return "";
     }
 
     public int retornaTipo(String termo) {
@@ -67,15 +60,25 @@ grammar Language;
     public void verificaValor(String termo) {
         Variable variable = (Variable) tabela.getSymbol(termo);
         if (variable.getValue() == null) {
-            throw new SemanticException("Id " +"'"+ termo + "'"+ " doesn't have an attributed value.");
+            throw new SemanticException("Variable " + termo + " doesn't have an attributed value.");
         }
     }
 
     public void verificaId(String id) {
         if (!tabela.exists(id)) {
-            throw new SemanticException("Symbol (" + "'"+ id + "'" + ") doesn't exist.");
+            throw new SemanticException("Symbol (" + id + ") doesn't exist.");
         }
     };
+
+    public void verificacaoDeTipos(String nome, ArrayList<Integer> listaTipos){
+        int type = retornaTipo(nome);
+        for(int tipo : listaTipos) {
+            if(type != tipo) {
+                throw new SemanticException("Variable " + nome + " (type: "+ retornaNomeDoTipo(type)
+                     + ") does not match with type " + retornaNomeDoTipo(tipo));
+            }
+        }
+    }
 
     public void exibeComandos() {
         for (AbstractCommand c: programa.getCommands()) {
@@ -97,7 +100,7 @@ grammar Language;
         for (Symbol s : lista) {
            variable = (Variable) s;
             if(variable.getValue() == null ) {
-                System.out.println("Warning: " + s.getName() + " is not been used.");
+                System.out.println("Warning: Variable " + s.getName() + " is declared but its value is never read.");
             }
         }
     }
@@ -134,9 +137,10 @@ declaracao      : tipo Id {
                     } else throw new SemanticException("Symbol (" + _varNome + ") already declared");
                 })* PV;
 
-tipo            : 'Fracionado'  { _tipo = Variable.FRACIONADO; }
-                | 'Texto'       { _tipo = Variable.TEXT;   }
-                | 'Inteiro'     { _tipo = Variable.INTEIRO;   };
+tipo            : 'Caractere'   { _tipo = Variable.CARACTERE; }
+                | 'Texto'       { _tipo = Variable.TEXTO; }
+                | 'Inteiro'     { _tipo = Variable.INTEIRO; }
+                | 'Fracionado'  { _tipo = Variable.FRACIONADO; };
 
 conteudo        : {
                     threadAtual = new ArrayList<AbstractCommand>();
@@ -242,7 +246,7 @@ iSelecao        : 'se' {
 
 iLaco               : facaEnquanto | enquanto;
 
-facaEnquanto        : 'faca' {
+facaEnquanto    : 'faca' {
                     // Limpa conteúdo anterior
                     listaLaco = new ArrayList<AbstractCommand>();
                     listaTipos = new ArrayList<Integer>();
@@ -273,16 +277,15 @@ facaEnquanto        : 'faca' {
                     pilha.peek().add(cmd);
                 };
 
-enquanto          : 'enquanto' P1 Id {
+enquanto        : 'enquanto' P1 Id {
                     // Limpa conteúdo anterior
                     listaLaco = new ArrayList<AbstractCommand>();
                     listaTipos = new ArrayList<Integer>();
-                    //
+
                     verificaId(_input.LT(-1).getText());
                     verificaValor(_input.LT(-1).getText());
                     _expressaoLacoId = _input.LT(-1).getText();
                     _expressaoLaco = _input.LT(-1).getText();
-
                 } Relacional {
                     _expressaoLaco += _input.LT(-1).getText();
                 } (Id {
@@ -304,9 +307,10 @@ enquanto          : 'enquanto' P1 Id {
                     pilha.peek().add(cmd);
                 };
 
-valor           : Fracionado { listaTipos.add(Variable.FRACIONADO); }
-                | Inteiro { listaTipos.add(Variable.INTEIRO); }
-                | Texto { listaTipos.add(Variable.TEXT); };
+valor           : Caractere     { listaTipos.add(Variable.CARACTERE); }
+                | Texto         { listaTipos.add(Variable.TEXTO); }
+                | Inteiro       { listaTipos.add(Variable.INTEIRO); }
+                | Fracionado    { listaTipos.add(Variable.FRACIONADO); };
 
 /* Tokens */
 
@@ -336,6 +340,8 @@ Id                  : [a-z] ([a-z] | [A-Z] | [0-9])*;
 
 Fracionado          : [0-9]+ '.' [0-9]+;
 
-Inteiro          : [0-9]+;
+Inteiro             : [0-9]+;
 
 Texto               : '"' ([a-z] | [A-Z] | [0-9])* '"';
+
+Caractere           : '\'' ([a-z] | [A-Z] | [0-9]) '\'';

@@ -3,8 +3,7 @@ package language.main;
 import language.exceptions.SemanticException;
 import language.parser.LanguageLexer;
 import language.parser.LanguageParser;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
 
 // Arquivo fonte: extensão '.comp'
 public class MainClass {
@@ -16,6 +15,17 @@ public class MainClass {
             lexer = new LanguageLexer(CharStreams.fromFileName("entrada.comp"));
             CommonTokenStream tokenStream = new CommonTokenStream(lexer);
             parser = new LanguageParser(tokenStream);
+
+            // Checagem de erros mais estrita - https://stackoverflow.com/questions/51683104/how-to-catch-minor-errors
+            parser.removeErrorListeners();
+            parser.addErrorListener (new BaseErrorListener()
+            {
+                @Override
+                public void syntaxError (final Recognizer<?,?> recognizer, Object sym, int line, int pos, String msg, RecognitionException e)
+                {
+                    throw new AssertionError ("ANTLR - syntax-error - line: " + line + ", position: " + pos + ", message: " + msg);
+                }
+            });
 
             parser.programa();
 
