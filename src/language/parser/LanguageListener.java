@@ -153,6 +153,26 @@ public interface LanguageListener extends ParseTreeListener {
 	 */
 	void exitILaco(LanguageParser.ILacoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LanguageParser#facaEnquanto}.
+	 * @param ctx the parse tree
+	 */
+	void enterFacaEnquanto(LanguageParser.FacaEnquantoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#facaEnquanto}.
+	 * @param ctx the parse tree
+	 */
+	void exitFacaEnquanto(LanguageParser.FacaEnquantoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LanguageParser#enquanto}.
+	 * @param ctx the parse tree
+	 */
+	void enterEnquanto(LanguageParser.EnquantoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LanguageParser#enquanto}.
+	 * @param ctx the parse tree
+	 */
+	void exitEnquanto(LanguageParser.EnquantoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LanguageParser#valor}.
 	 * @param ctx the parse tree
 	 */

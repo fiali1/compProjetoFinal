@@ -117,6 +117,26 @@ public class LanguageLexer extends Lexer {
 	    private ArrayList<AbstractCommand> listaLaco;
 	    private ArrayList<Integer> listaTipos;
 
+	    public void verificacaoDeTipos(String nome, ArrayList<Integer> listaTipos){
+	        int type = retornaTipo(nome);
+	        for(int tipo : listaTipos) {
+	            if(type != tipo) {
+	                throw new SemanticException("Variable " + nome + " (type: "+ retornaNomeDoTipo(type)
+	                     + ") does not match with the type " + retornaNomeDoTipo(tipo));
+	            }
+	        }
+	    }
+
+	    public String retornaNomeDoTipo (int type) {
+	        if (type == 0) {
+	            return "Fracionado";
+	        } else if (type == 1) {
+	            return "Texto";
+	        } else {
+	            return "Inteiro";
+	        }
+	    }
+
 	    public int retornaTipo(String termo) {
 	        Variable variable = (Variable) tabela.getSymbol(termo);
 	        return variable.getType();
@@ -125,13 +145,13 @@ public class LanguageLexer extends Lexer {
 	    public void verificaValor(String termo) {
 	        Variable variable = (Variable) tabela.getSymbol(termo);
 	        if (variable.getValue() == null) {
-	            throw new SemanticException("Id " + termo + " doesn't have a value");
+	            throw new SemanticException("Id " +"'"+ termo + "'"+ " doesn't have an attributed value.");
 	        }
 	    }
 
 	    public void verificaId(String id) {
 	        if (!tabela.exists(id)) {
-	            throw new SemanticException("Symbol (" + id + ") doesn't exist");
+	            throw new SemanticException("Symbol (" + "'"+ id + "'" + ") doesn't exist.");
 	        }
 	    };
 
@@ -155,7 +175,7 @@ public class LanguageLexer extends Lexer {
 	        for (Symbol s : lista) {
 	           variable = (Variable) s;
 	            if(variable.getValue() == null ) {
-	                System.out.println("Warning: " + s.getName() + " is not been used!");
+	                System.out.println("Warning: " + s.getName() + " is not been used.");
 	            }
 	        }
 	    }

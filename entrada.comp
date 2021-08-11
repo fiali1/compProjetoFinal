@@ -6,4 +6,11 @@ inicio
     b = 100;
     d = 10.1;
 
+    enquanto(a > b) {
+        escrever(a);
+    }
+    faca {
+        escrever(b);
+    } enquanto(a < b);
+
 fim;

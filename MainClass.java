@@ -11,5 +11,11 @@ double g;
 a = 11;
 b = 100;
 d = 10.1;
+ while (a>b) {
+System.out.println(a);
+}
+do {
+System.out.println(b);
+} while (a<b);
 }
 }

@@ -39,6 +39,26 @@ grammar Language;
     private ArrayList<AbstractCommand> listaLaco;
     private ArrayList<Integer> listaTipos;
 
+    public void verificacaoDeTipos(String nome, ArrayList<Integer> listaTipos){
+        int type = retornaTipo(nome);
+        for(int tipo : listaTipos) {
+            if(type != tipo) {
+                throw new SemanticException("Variable " + nome + " (type: "+ retornaNomeDoTipo(type)
+                     + ") does not match with the type " + retornaNomeDoTipo(tipo));
+            }
+        }
+    }
+
+    public String retornaNomeDoTipo (int type) {
+        if (type == 0) {
+            return "Fracionado";
+        } else if (type == 1) {
+            return "Texto";
+        } else {
+            return "Inteiro";
+        }
+    }
+
     public int retornaTipo(String termo) {
         Variable variable = (Variable) tabela.getSymbol(termo);
         return variable.getType();
@@ -47,13 +67,13 @@ grammar Language;
     public void verificaValor(String termo) {
         Variable variable = (Variable) tabela.getSymbol(termo);
         if (variable.getValue() == null) {
-            throw new SemanticException("Id " + termo + " doesn't have a value");
+            throw new SemanticException("Id " +"'"+ termo + "'"+ " doesn't have an attributed value.");
         }
     }
 
     public void verificaId(String id) {
         if (!tabela.exists(id)) {
-            throw new SemanticException("Symbol (" + id + ") doesn't exist");
+            throw new SemanticException("Symbol (" + "'"+ id + "'" + ") doesn't exist.");
         }
     };
 
@@ -77,7 +97,7 @@ grammar Language;
         for (Symbol s : lista) {
            variable = (Variable) s;
             if(variable.getValue() == null ) {
-                System.out.println("Warning: " + s.getName() + " is not been used!");
+                System.out.println("Warning: " + s.getName() + " is not been used.");
             }
         }
     }
@@ -156,12 +176,7 @@ iAttribuicao    : Id {
                 } expressao PV {
                     // Associa os novos valores à variável e atualiza ela na tabela
 
-                    int type = retornaTipo(_expressaoId);
-                    for(int tipo : listaTipos) {
-                        if(type != tipo) {
-                            throw new SemanticException("type " + type + " is different from " + tipo);
-                        }
-                    }
+                    verificacaoDeTipos(_expressaoId, listaTipos);
 
                     _varNome    = _expressaoId;
                     _varValor   = _expressaoConteudo;
@@ -210,13 +225,7 @@ iSelecao        : 'se' {
                 } | valor) {
                     _expressaoDecisao += _input.LT(-1).getText();
                 } P2 C1 {
-                    int type = retornaTipo(_expressaoDecisaoId);
-                    for(int tipo : listaTipos) {
-                      if(type != tipo) {
-                          throw new SemanticException("type " + type + " is different from " + tipo);
-                      }
-                    }
-
+                    verificacaoDeTipos(_expressaoDecisaoId, listaTipos);
                     threadAtual = new ArrayList<AbstractCommand>();
                     pilha.push(threadAtual);
                 } (instrucao)+ C2 {
@@ -231,7 +240,9 @@ iSelecao        : 'se' {
                     pilha.peek().add(cmd);
                 };
 
-iLaco           : 'faca' {
+iLaco               : facaEnquanto | enquanto;
+
+facaEnquanto        : 'faca' {
                     // Limpa conteúdo anterior
                     listaLaco = new ArrayList<AbstractCommand>();
                     listaTipos = new ArrayList<Integer>();
@@ -257,13 +268,39 @@ iLaco           : 'faca' {
                 } | valor) {
                     _expressaoLaco += _input.LT(-1).getText();
                 } P2 PV {
-                    int type = retornaTipo(_expressaoLacoId);
-                    for(int tipo : listaTipos) {
-                       if(type != tipo) {
-                          throw new SemanticException("type " + type + " is different from " + tipo);
-                       }
-                    }
-                    LoopCommand cmd = new LoopCommand(_expressaoLaco, listaLaco);
+                    verificacaoDeTipos(_expressaoLacoId, listaTipos);
+                    LoopCommand cmd = new LoopCommand(_expressaoLaco, listaLaco, 0);
+                    pilha.peek().add(cmd);
+                };
+
+enquanto          : 'enquanto' P1 Id {
+                    // Limpa conteúdo anterior
+                    listaLaco = new ArrayList<AbstractCommand>();
+                    listaTipos = new ArrayList<Integer>();
+                    //
+                    verificaId(_input.LT(-1).getText());
+                    verificaValor(_input.LT(-1).getText());
+                    _expressaoLacoId = _input.LT(-1).getText();
+                    _expressaoLaco = _input.LT(-1).getText();
+
+                } Relacional {
+                    _expressaoLaco += _input.LT(-1).getText();
+                } (Id {
+                    verificaId(_input.LT(-1).getText());
+                    verificaValor(_input.LT(-1).getText());
+                    listaTipos.add(retornaTipo(_input.LT(-1).getText()));
+                } | valor) {
+                    _expressaoLaco += _input.LT(-1).getText();
+                } P2 {
+                    verificacaoDeTipos(_expressaoLacoId, listaTipos);
+                } C1 {
+                    // Cria nova lista de comandos
+                    threadAtual = new ArrayList<AbstractCommand>();
+                    pilha.push(threadAtual);
+                } (instrucao)+ C2 {
+                    // Armazena e limpa último item da pilha
+                    listaLaco = pilha.pop();
+                    LoopCommand cmd = new LoopCommand(_expressaoLaco, listaLaco, 1);
                     pilha.peek().add(cmd);
                 };
 
