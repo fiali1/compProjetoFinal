@@ -29,11 +29,11 @@ public class MainClass {
 
             parser.programa();
 
-            parser.exibeComandos();
+//            parser.exibeComandos();
 
             parser.gerarCodigo();
 
-            parser.exibeTabela();
+//            parser.exibeTabela();
 
             parser.exibeTabelaComVariaveisNull();
 

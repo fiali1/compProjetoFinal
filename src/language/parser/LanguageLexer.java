@@ -137,7 +137,7 @@ public class LanguageLexer extends Lexer {
 
 	    public void verificaValor(String termo) {
 	        Variable variable = (Variable) tabela.getSymbol(termo);
-	        if (variable.getValue() == null) {
+	        if (variable.getValue() == null && variable.isRead() == false) {
 	            throw new SemanticException("Variable " + termo + " doesn't have an attributed value.");
 	        }
 	    }
@@ -177,7 +177,7 @@ public class LanguageLexer extends Lexer {
 	        Variable variable;
 	        for (Symbol s : lista) {
 	           variable = (Variable) s;
-	            if(variable.getValue() == null ) {
+	            if(variable.getValue() == null && variable.isRead() == false) {
 	                System.out.println("Warning: Variable " + s.getName() + " is declared but its value is never read.");
 	            }
 	        }

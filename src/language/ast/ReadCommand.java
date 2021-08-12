@@ -14,8 +14,22 @@ public class ReadCommand extends AbstractCommand {
 
     @Override
     public String generateJavaCode() {
-        return id + " = _key." + (var.getType() == Variable.FRACIONADO ? "nextDouble();\n_key.nextLine();" : "nextLine()" +
-                ";");
+        int type = var.getType();
+
+        String reader = "";
+
+        if (type == Variable.CARACTERE)
+            reader = "next().charAt(0);\n_key.nextLine();";
+        else if (type == Variable.TEXTO)
+            reader = "nextLine();";
+        else if (type == Variable.INTEIRO)
+            reader = "nextInt();\n_key.nextLine();";
+        else if (type == Variable.FRACIONADO)
+            reader = "nextDouble();\n_key.nextLine();";
+        else
+            reader = "";
+
+        return id + " = _key." + reader;
     }
 
     public String getId() {

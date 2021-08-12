@@ -59,7 +59,7 @@ grammar Language;
 
     public void verificaValor(String termo) {
         Variable variable = (Variable) tabela.getSymbol(termo);
-        if (variable.getValue() == null) {
+        if (variable.getValue() == null && variable.isRead() == false) {
             throw new SemanticException("Variable " + termo + " doesn't have an attributed value.");
         }
     }
@@ -99,7 +99,7 @@ grammar Language;
         Variable variable;
         for (Symbol s : lista) {
            variable = (Variable) s;
-            if(variable.getValue() == null ) {
+            if(variable.getValue() == null && variable.isRead() == false) {
                 System.out.println("Warning: Variable " + s.getName() + " is declared but its value is never read.");
             }
         }
@@ -123,7 +123,7 @@ declaracao      : tipo Id {
                     simbolo     = new Variable(_varNome, _tipo, _varValor);
 
                     if (!tabela.exists(_varNome)) {
-                        System.out.println("Symbolo adicionado: " + simbolo);
+//                        System.out.println("Symbolo adicionado: " + simbolo);
                         tabela.addSymbol(simbolo);
                     } else throw new SemanticException("Symbol (" + _varNome + ") already declared");
                 } (V Id {
@@ -132,7 +132,7 @@ declaracao      : tipo Id {
                     simbolo     = new Variable(_varNome, _tipo, _varValor);
 
                     if (!tabela.exists(_varNome)) {
-                        System.out.println("Symbolo adicionado: " + simbolo);
+//                        System.out.println("Symbolo adicionado: " + simbolo);
                         tabela.addSymbol(simbolo);
                     } else throw new SemanticException("Symbol (" + _varNome + ") already declared");
                 })* PV;
@@ -158,6 +158,11 @@ iLeitura        : 'ler' P1 Id {
                     _lerId = _input.LT(-1).getText();
                 } P2 PV {
                     Variable var = (Variable) tabela.getSymbol(_lerId);
+                    var.setRead(true);
+
+                    // Marca a variável como lida
+                    tabela.setSymbol(_lerId, var);
+
                     ReadCommand cmd = new ReadCommand(_lerId, var);
                     pilha.peek().add(cmd);
                 };

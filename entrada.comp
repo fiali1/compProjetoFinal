@@ -1,16 +1,8 @@
 inicio
-    Inteiro a, b;
-    Texto c;
-    Fracionado d, e, f;
+    Fracionado a;
+    Caractere b;
 
-    Caractere g;
-
-    a = 11;
-    b = 100;
-    d = 10.1;
-
-    c = "Texto";
-
-    g = '1';
+    ler(a);
+    escrever(a);
 
 fim;

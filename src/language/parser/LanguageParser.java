@@ -145,7 +145,7 @@ public class LanguageParser extends Parser {
 
 	    public void verificaValor(String termo) {
 	        Variable variable = (Variable) tabela.getSymbol(termo);
-	        if (variable.getValue() == null) {
+	        if (variable.getValue() == null && variable.isRead() == false) {
 	            throw new SemanticException("Variable " + termo + " doesn't have an attributed value.");
 	        }
 	    }
@@ -185,7 +185,7 @@ public class LanguageParser extends Parser {
 	        Variable variable;
 	        for (Symbol s : lista) {
 	           variable = (Variable) s;
-	            if(variable.getValue() == null ) {
+	            if(variable.getValue() == null && variable.isRead() == false) {
 	                System.out.println("Warning: Variable " + s.getName() + " is declared but its value is never read.");
 	            }
 	        }
@@ -350,7 +350,7 @@ public class LanguageParser extends Parser {
 			                    simbolo     = new Variable(_varNome, _tipo, _varValor);
 
 			                    if (!tabela.exists(_varNome)) {
-			                        System.out.println("Symbolo adicionado: " + simbolo);
+			//                        System.out.println("Symbolo adicionado: " + simbolo);
 			                        tabela.addSymbol(simbolo);
 			                    } else throw new SemanticException("Symbol (" + _varNome + ") already declared");
 			                
@@ -370,7 +370,7 @@ public class LanguageParser extends Parser {
 				                    simbolo     = new Variable(_varNome, _tipo, _varValor);
 
 				                    if (!tabela.exists(_varNome)) {
-				                        System.out.println("Symbolo adicionado: " + simbolo);
+				//                        System.out.println("Symbolo adicionado: " + simbolo);
 				                        tabela.addSymbol(simbolo);
 				                    } else throw new SemanticException("Symbol (" + _varNome + ") already declared");
 				                
@@ -652,6 +652,11 @@ public class LanguageParser extends Parser {
 			match(PV);
 
 			                    Variable var = (Variable) tabela.getSymbol(_lerId);
+			                    var.setRead(true);
+
+			                    // Marca a variável como lida
+			                    tabela.setSymbol(_lerId, var);
+
 			                    ReadCommand cmd = new ReadCommand(_lerId, var);
 			                    pilha.peek().add(cmd);
 			                

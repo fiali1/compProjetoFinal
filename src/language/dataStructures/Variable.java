@@ -9,11 +9,13 @@ public class Variable extends Symbol {
 
     private int type;
     private String value;
+    private boolean read;
 
     public Variable(String name, int type, String value) {
         super(name);
         this.type   = type;
         this.value  = value;
+        this.read   = false;
     }
 
     @Override
@@ -52,5 +54,13 @@ public class Variable extends Symbol {
     @Override
     public String toString() {
         return "Variable [name = " + this.name + ", type = " + this.type + ", value = " + value + "]";
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 }
